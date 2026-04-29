@@ -12,3 +12,8 @@ wheels/
 # uv
 uv.lock
 .python-version
+
+# runtime files
+*.log
+config.toml
+datas/

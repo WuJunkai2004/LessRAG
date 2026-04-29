@@ -5,6 +5,8 @@ from pathlib import Path
 
 import uvicorn
 
+from server.utils.config import config
+
 
 def handle_config(args):
     """处理 config 命令：从包目录复制 config.example.toml 到当前工作目录下的 config.toml"""
@@ -54,12 +56,17 @@ def handle_config(args):
 
 def handle_server(args):
     """处理 server 命令：启动 uvicorn 服务器"""
-    # 如果指定了配置文件，可以在这里进行额外的逻辑（目前 LessRAG 内部可能通过环境变量或默认路径读取）
     if args.config:
         os.environ["LESSRAG_CONFIG"] = args.config
+        # 显式重载配置，以防 config 之前已被其他模块导入
+        config.reload()
 
-    print(f"正在启动 LessRAG 服务器于 {args.host}:{args.port}...")
-    uvicorn.run("server.main:app", host=args.host, port=args.port)
+    # 优先级：命令行参数 > 配置文件 > 硬编码默认值
+    host = args.host or config.get("host") or "0.0.0.0"
+    port = args.port or config.get("port") or 15000
+
+    print(f"[*] 正在启动 LessRAG 服务器于 {host}:{port}...")
+    uvicorn.run("server.main:app", host=host, port=port, reload=True)
 
 
 def main():
@@ -72,10 +79,10 @@ def main():
     # server 命令
     server_parser = subparsers.add_parser("server", help="启动服务器", add_help=False)
     server_parser.add_argument(
-        "-p", "--port", type=int, default=15000, help="端口号 (默认: 15000)"
+        "-p", "--port", type=int, help="端口号 (默认: 15000 或配置文件指定)"
     )
     server_parser.add_argument(
-        "-h", "--host", type=str, default="0.0.0.0", help="绑定地址 (默认: 0.0.0.0)"
+        "-h", "--host", type=str, help="绑定地址 (默认: 0.0.0.0 或配置文件指定)"
     )
     server_parser.add_argument("-c", "--config", type=str, help="指定配置文件路径")
     server_parser.add_argument("--help", action="help", help="显示此帮助信息并退出")
