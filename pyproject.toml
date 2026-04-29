@@ -1,5 +1,5 @@
 [project]
-name = "lessrag"
+name = "lessRAG"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -9,6 +9,8 @@ dependencies = [
     "fastapi>=0.136.1",
     "openai>=2.33.0",
     "peewee>=4.0.5",
+    "pydantic>=2.13.3",
     "pymupdf>=1.27.2.3",
+    "python-multipart>=0.0.27",
     "uvicorn>=0.46.0",
 ]
