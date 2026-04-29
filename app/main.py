@@ -6,6 +6,7 @@ from pathlib import Path
 import uvicorn
 
 from server.utils.config import config
+from server.utils.logger import log
 
 
 def handle_config(args):
@@ -17,19 +18,17 @@ def handle_config(args):
     dst = Path.cwd() / "config.toml"
 
     if not src.exists():
-        print(f"[-] 错误: 找不到模板文件 {src}")
+        log("config").error(f"找不到模板文件 {src}")
         exit(1)
 
     if dst.exists():
         try:
-            choice = input(
-                f"[!] 当前目录下 {dst.name} 已存在，是否覆盖？(y/N): "
-            ).lower()
+            choice = input(f"当前目录下 {dst.name} 已存在，是否覆盖？(y/N): ").lower()
             if choice != "y":
-                print("[*] 操作已取消")
+                log("config").info("用户选择不覆盖现有配置文件")
                 return
         except KeyboardInterrupt:
-            print("\n[*] 操作已取消")
+            log("config").info("用户取消了操作")
             return
 
     try:
@@ -41,16 +40,18 @@ def handle_config(args):
         try:
             shutil.copy2(src, tmp_dst)
             tmp_dst.replace(dst)
-            print(f"[+] 成功{'覆盖' if is_update else '创建'}配置文件: {dst.resolve()}")
+            log("config").info(
+                f"成功{'覆盖' if is_update else '创建'}配置文件: {dst.resolve()}"
+            )
         finally:
             # 如果 replace 失败（例如目标文件被锁定），清理临时文件
             if tmp_dst.exists():
                 tmp_dst.unlink()
     except PermissionError:
-        print(f"[-] 错误: 没有权限在当前目录写入文件 {dst}")
+        log("config").error(f"没有权限在当前目录写入文件 {dst}")
         exit(1)
     except Exception as e:
-        print(f"[-] 创建配置文件失败: {e}")
+        log("config").error(f"创建配置文件失败: {e}")
         exit(1)
 
 
@@ -65,7 +66,6 @@ def handle_server(args):
     host = args.host or config.get("host") or "0.0.0.0"
     port = args.port or config.get("port") or 15000
 
-    print(f"[*] 正在启动 LessRAG 服务器于 {host}:{port}...")
     uvicorn.run("server.main:app", host=host, port=port, reload=True)
 
 
