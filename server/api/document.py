@@ -1,5 +1,4 @@
 import shutil
-from pathlib import Path
 
 from fastapi import APIRouter, File, Query, UploadFile
 from pydantic import BaseModel
@@ -16,10 +15,11 @@ from server.schema.document import (
 )
 from server.tasks.manager import task_manager
 from server.tasks.process import process_document_task
+from server.utils.config import DATA_PATH
 
 router = APIRouter(prefix="/document", tags=["document"])
 
-UPLOAD_DIR = Path("uploads")
+UPLOAD_DIR = DATA_PATH / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
 
 

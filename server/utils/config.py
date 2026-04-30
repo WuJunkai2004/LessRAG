@@ -8,10 +8,13 @@ from typing import Any, Dict
 try:
     import tomllib  # Python 3.11+ 内置支持, # type: ignore
 except ImportError:
-    import tomli as tomllib  # Python 3.10 需要安装 tomli
+    import tomli as tomllib  # Python 3.10 需要安装 tomli   # type: ignore
 
 
 from server.utils.logger import log
+
+ROOT_PATH = Path(__file__).resolve().parent.parent.parent
+DATA_PATH = ROOT_PATH / "datas"
 
 
 class Config:
