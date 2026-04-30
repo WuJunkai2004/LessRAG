@@ -1,13 +1,40 @@
+# host and port for the server to listen on
+# can also be set in the command line with --host(-h) and --port(-p)
+# the command line arguments will override the values in this config file
+# - required: false
+# - default: host="127.0.0.1"
+#            port=15000
+host="0.0.0.0"
 port=15000
 
-[llm]
+# Default Document Collection Name
+# the Collection Name can be set in API request,
+# if not set, it will use the default collection name in this config file
+# the collection name is used to store the documents and their embeddings in the vector database
+# required: false
+# - default: collection_name="default"
+collection_name="default"
+
+# Large Language Model (LLM) configuration
+# the model name, API URL and API key for the LLM to use for generating responses
+# - required: true
+[model]
 model="gpt-3.5-turbo"
 api_url="https://api.openai.com/v1/chat/completions"
 api_key="your_api_key_here"
+# additional parameters for the LLM, such as temperature, max_tokens, etc.
+# these parameters will be passed to the LLM API when generating responses
+# - required: false
 [llm.extra]
 temperature=0.7
 
+# Embedding Model configuration
+# the model name, API URL and API key for the embedding model to use for generating embeddings
+# - required: true
 [embedding]
 model="text-embedding-3-small"
 api_url="https://api.openai.com/v1/embeddings"
 api_key="your_api_key_here"
+# also can additional parameters for the embedding model, such as max_tokens, etc.
+# these parameters will be passed to the embedding model API when generating embeddings
+# - required: false
