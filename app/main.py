@@ -1,15 +1,11 @@
-import argparse
-import os
 import shutil
 from pathlib import Path
-
-import uvicorn
 
 from server.utils.config import config
 from server.utils.logger import log
 
 
-def handle_config(args):
+def handle_config():
     """处理 config 命令：从包目录复制 config.example.toml 到当前工作目录下的 config.toml"""
     # 源文件：现在与本文件在同一目录下
     src = Path(__file__).resolve().parent / "config.example.toml"
@@ -55,46 +51,22 @@ def handle_config(args):
         exit(1)
 
 
-def handle_server(args):
-    """处理 server 命令：启动 uvicorn 服务器"""
-    if args.config:
-        os.environ["LESSRAG_CONFIG"] = args.config
-        # 显式重载配置，以防 config 之前已被其他模块导入
-        config.reload()
+def handle_server():
+    from server.main import start
 
     # 优先级：命令行参数 > 配置文件 > 硬编码默认值
-    host = args.host or config.get("host") or "0.0.0.0"
-    port = args.port or config.get("port") or 15000
-
-    uvicorn.run("server.main:app", host=host, port=port, reload=True)
+    host = config.args.host or config.get("host") or "0.0.0.0"
+    port = config.args.port or config.get("port") or 15000
+    start(host, port)
 
 
 def main():
-    parser = argparse.ArgumentParser(prog="lessrag", description="LessRAG 命令行工具")
-    subparsers = parser.add_subparsers(dest="command", help="可用命令")
-
-    # config 命令
-    subparsers.add_parser("config", help="创建默认配置文件")
-
-    # server 命令
-    server_parser = subparsers.add_parser("server", help="启动服务器", add_help=False)
-    server_parser.add_argument(
-        "-p", "--port", type=int, help="端口号 (默认: 15000 或配置文件指定)"
-    )
-    server_parser.add_argument(
-        "-h", "--host", type=str, help="绑定地址 (默认: 0.0.0.0 或配置文件指定)"
-    )
-    server_parser.add_argument("-c", "--config", type=str, help="指定配置文件路径")
-    server_parser.add_argument("--help", action="help", help="显示此帮助信息并退出")
-
-    args = parser.parse_args()
-
-    if args.command == "config":
-        handle_config(args)
-    elif args.command == "server":
-        handle_server(args)
+    if config.command == "config":
+        handle_config()
+    elif config.command == "server":
+        handle_server()
     else:
-        parser.print_help()
+        config.help()
 
 
 if __name__ == "__main__":
