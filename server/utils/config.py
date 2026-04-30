@@ -83,6 +83,23 @@ class Config:
         except (KeyError, TypeError):
             return default
 
+    def _required(self, keys: tuple) -> bool:
+        """检查一组配置项是否都存在"""
+        return all(self.get(k) is not None for k in keys)
+
+    @property
+    def all_required(self) -> bool:
+        """检查所有必需的配置项是否都存在"""
+        required_keys = (
+            # model configuration
+            "model.model",
+            "model.api_url",
+            # embedding configuration
+            "embedding.model",
+            "embedding.api_url",
+        )
+        return self._required(required_keys)
+
 
 # 单例导出
 config = Config()
