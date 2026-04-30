@@ -1,6 +1,8 @@
 import shutil
 from pathlib import Path
 
+import uvicorn
+
 from server.utils.config import config
 from server.utils.logger import log
 
@@ -52,12 +54,11 @@ def handle_config():
 
 
 def handle_server():
-    from server.main import start
-
     # 优先级：命令行参数 > 配置文件 > 硬编码默认值
     host = config.args.host or config.get("host") or "0.0.0.0"
     port = config.args.port or config.get("port") or 15000
-    start(host, port)
+
+    uvicorn.run("server.main:app", host=host, port=port, reload=True)
 
 
 def main():
