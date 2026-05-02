@@ -1,0 +1,48 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Capacitor / Android
+# We keep the android directory but ignore its build artifacts
+/android/.gradle
+/android/app/build
+/android/build
+/android/captures
+/android/local.properties
+/android/.idea
+/android/*.iml
+/android/app/*.iml
+
+# Generated files
+/android/app/src/main/assets/public
+/android/app/src/main/assets/capacitor.config.json
+/android/app/src/main/res/xml/config.xml
+
+# System Files
+Thumbs.db
+desktop.ini
+
+# development environment files
+.env
+api.md
