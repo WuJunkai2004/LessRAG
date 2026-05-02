@@ -21,7 +21,6 @@
   },
   "devDependencies": {
     "@primevue/auto-import-resolver": "^4.5.4",
-    "@scalar/openapi-to-markdown": "^0.4.14",
     "@vitejs/plugin-vue": "^6.0.5",
     "unplugin-vue-components": "^31.0.0",
     "vite": "^8.0.7"
