@@ -2,7 +2,7 @@ import time
 
 import httpx
 
-BASE_URL = "http://127.0.0.1:15000/api/v1"
+BASE_URL = "http://127.0.0.1:18800/api/v1"
 
 
 def test_health_check():

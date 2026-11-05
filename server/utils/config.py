@@ -1,6 +1,5 @@
 import argparse
 import os
-from cmath import e
 from pathlib import Path
 from typing import Any, Dict
 
@@ -41,10 +40,13 @@ class Config:
             "server", help="启动服务器", add_help=False
         )
         server_parser.add_argument(
-            "-p", "--port", type=int, help="端口号 (默认: 15000 或配置文件指定)"
+            "-p", "--port", type=int, help="端口号 (默认: 18800 或配置文件指定)"
         )
         server_parser.add_argument(
             "-h", "--host", type=str, help="绑定地址 (默认: 0.0.0.0 或配置文件指定)"
+        )
+        server_parser.add_argument(
+            "--with-ui", action="store_true", help="同时挂载 Mesop Web UI 到根路径"
         )
         server_parser.add_argument("-c", "--config", type=str, help="指定配置文件路径")
         server_parser.add_argument("--help", action="help", help="显示此帮助信息并退出")
@@ -67,7 +69,7 @@ class Config:
         try:
             with config_path.open("rb") as f:
                 return tomllib.load(f)
-        except Exception:
+        except Exception as e:
             log("config").error(f"加载配置文件失败: {e}")
             return {}
 

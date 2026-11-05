@@ -3,9 +3,9 @@
 # the command line arguments will override the values in this config file
 # - required: false
 # - default: host="127.0.0.1"
-#            port=15000
+#            port=18800
 host="0.0.0.0"
-port=15000
+port=18800
 
 # Default Document Collection Name
 # the Collection Name can be set in API request,

@@ -54,9 +54,16 @@ def handle_config():
 
 
 def handle_server():
-    # 优先级：命令行参数 > 配置文件 > 硬编码默认值
+    with_ui = getattr(config.args, "with_ui", False)
+    if with_ui:
+        try:
+            import mesop  # noqa: F401
+        except ImportError:
+            log("server").error("未安装 mesop。请运行 'pip install lessrag[ui]' 安装。")
+            exit(1)
+
     host = config.args.host or config.get("host") or "0.0.0.0"
-    port = config.args.port or config.get("port") or 15000
+    port = config.args.port or config.get("port") or 18800
 
     uvicorn.run("server.main:app", host=host, port=port, reload=True)
 

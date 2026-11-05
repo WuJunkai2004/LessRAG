@@ -40,12 +40,18 @@ uvx lessrag server
 **2. 作为全局 CLI 工具安装:**
 ```bash
 uv tool install lessrag
-or
+# 或者安装包含 UI 支持的版本
+uv tool install "lessrag[ui]"
+
+# 或者使用 pip
 pip install lessrag
+pip install "lessrag[ui]"
 
 lessrag config
 # 编辑 config.toml，填入您的 API Key 和模型信息
 lessrag server
+# 或者启动 UI 界面（Mesop Web UI 挂载在根路径）
+lessrag server --with-ui
 ```
 
 **3. 从源码安装 (用于开发):**
@@ -85,7 +91,7 @@ api_key="sk-..."
 lessrag server
 ```
 
-服务器默认运行在 `http://0.0.0.0:15000`。
+服务器默认运行在 `http://0.0.0.0:18800`。
 
 ## 📖 API 说明
 

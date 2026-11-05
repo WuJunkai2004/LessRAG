@@ -40,12 +40,18 @@ uvx lessrag server
 **2. Install as a global CLI tool:**
 ```bash
 uv tool install lessrag
-or
+# or with UI support
+uv tool install "lessrag[ui]"
+
+# or via pip
 pip install lessrag
+pip install "lessrag[ui]"
 
 lessrag config
 # edit the config.toml with your API keys and model preferences
 lessrag server
+# or start the UI (Mesop web UI served at the root path)
+lessrag server --with-ui
 ```
 
 **3. Install from source (for development):**
@@ -85,7 +91,7 @@ Start the LessRAG server with:
 lessrag server
 ```
 
-By default, the server runs on `http://0.0.0.0:15000`.
+By default, the server runs on `http://0.0.0.0:18800`.
 
 ## 📖 API Usage
 

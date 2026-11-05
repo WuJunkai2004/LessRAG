@@ -7,8 +7,8 @@ RAG system using LLM-based intelligent document chunking and embedding-based ret
 ```bash
 uv install                          # install dependencies
 lessrag config                      # generate config.toml in CWD from template
-lessrag server [-p 15000] [-c path] # start FastAPI server (uvicorn with reload)
-lessrag ui                          # start Mesop web UI (requires: uv install lessrag[ui])
+lessrag server [-p 18800] [-c path] # start FastAPI server (uvicorn with reload)
+lessrag server --with-ui             # start server with Mesop UI mounted at / (requires: uv install lessrag[ui])
 ```
 
 Config priority: CLI args > config.toml > defaults. Config path also set via `LESSRAG_CONFIG` env var.
@@ -37,7 +37,7 @@ Config priority: CLI args > config.toml > defaults. Config path also set via `LE
 
 Tests are integration tests (httpx) against a running server — server must be up first:
 ```bash
-lessrag server &           # start server on port 15000
+lessrag server &           # start server on port 18800
 python -m pytest tests/    # run integration tests
 ```
 
